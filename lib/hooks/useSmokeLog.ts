@@ -22,17 +22,17 @@ export function useSmokeLog() {
         .eq('date', today)
         .maybeSingle()
 
-      if(todayData) {
+      if (todayData) {
         dispatch(setTodayCount(todayData.count))
       }
 
-      const {data: historyData } = await supabase
+      const { data: historyData } = await supabase
         .from('smoke_logs')
         .select('*')
         .neq('date', today) // 今日以外のデータ
-        .order('date', {ascending: false})
+        .order('date', { ascending: false })
 
-      if(historyData) {
+      if (historyData) {
         dispatch(setHistory(historyData))
       }
 
@@ -54,7 +54,7 @@ export function useSmokeLog() {
         (payload: RealtimePostgresChangesPayload<SmokeLog>) => {
           const updated = payload.new as SmokeLog;
           const today = getTodayJST();
-          if(updated.date === today) {
+          if (updated.date === today) {
             dispatch(setTodayCount(updated.count))
             dispatch(setIsDayEnded(updated.is_day_ended))
           }
@@ -62,17 +62,17 @@ export function useSmokeLog() {
       )
       .subscribe();
 
-      return () => {
-        supabase.removeChannel(channel)
-      }
+    return () => {
+      supabase.removeChannel(channel)
+    }
   }, [dispatch])
 
   const incrementSmoke = async () => {
-    await fetch('/api/smoke', {method: 'POST'})
+    await fetch('/api/smoke', { method: 'POST' })
   };
 
   const endDay = async () => {
-    await fetch('/api/end-day', {method: 'POST'})
+    await fetch('/api/end-day', { method: 'POST' })
   };
 
   const todayCount = useSelector((state: RootState) => state.smoke.todayCount)

@@ -5,9 +5,9 @@ import classes from "./end_day_button.module.css";
 export default function EndDayButton() {
   const { isDayEnded, endDay } = useSmokeLog();
   const handleClick = () => {
-    if(confirm('今日のカウントを終了しますか？')) {
+    if (confirm('今日のカウントを終了しますか？')) {
       endDay();
     }
   }
-  return <button className={`rounded-xs hover:cursor-pointer ${classes.button01}`} onClick={handleClick} disabled={isDayEnded}>今日のカウントを終了</button>
+  return <button className={`rounded-xs w-[45%] hover:cursor-pointer mt-4 rounded-lg bg-gray-100 text-gray-500 ${classes.button01}`} onClick={handleClick} disabled={isDayEnded}>Finish Count</button>
 }
