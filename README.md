@@ -1,3 +1,6 @@
+# Tobacco Counter
+1日(*)に吸ったタバコの本数を記録するアプリです。
+
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Getting Started
