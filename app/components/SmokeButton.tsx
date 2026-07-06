@@ -2,11 +2,13 @@
 import { useSmokeLog } from "@/lib/hooks/useSmokeLog";
 import { Orbitron } from "next/font/google";
 
+// フォント読み込み
 const orbitron = Orbitron({
   weight: '500',
   subsets: ["latin"]
 });
 
+// 本数をカウント処理するボタン
 export default function SmokeButton() {
   const { isDayEnded, incrementSmoke } = useSmokeLog();
   return (

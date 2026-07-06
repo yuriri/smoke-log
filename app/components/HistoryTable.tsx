@@ -1,21 +1,15 @@
 "use client";
 
 import { useSmokeLog } from "@/lib/hooks/useSmokeLog";
-import { Orbitron } from "next/font/google";
 import Loading from "@/app/components/ui/Loading";
 import { SmokeLog } from "@/app/page";
-
-const orbitron = Orbitron({
-  weight: '400',
-  subsets: ["latin"]
-});
 
 // 昨日の日付を取得する
 function getYesterdayJST(): string {
   return new Intl.DateTimeFormat('sv-SE', { timeZone: 'Asia/Tokyo' }).format(new Date(Date.now() - 86400000));
 }
 
-// 過去日(昨日以前）のログを取得し、データがない日は値を0とする
+// 過去日(昨日以前）のログを取得し、データがない日は値を0とし、データを返す
 function fillHistory(history: SmokeLog[]): { date: string; count: number }[] {
   if (history.length === 0) return [];
 
@@ -41,8 +35,9 @@ function fillHistory(history: SmokeLog[]): { date: string; count: number }[] {
 }
 
 export default function History() {
+  // ログを取得
   const { history, isLoading } = useSmokeLog();
-  // ヒストリーログを作成
+  // ログを整形
   const filledHistory = fillHistory(history);
 
   return (
