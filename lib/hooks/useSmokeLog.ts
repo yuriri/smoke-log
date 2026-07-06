@@ -1,4 +1,5 @@
 "use client";
+
 import { SmokeLog } from "@/app/page";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -78,14 +79,15 @@ export function useSmokeLog() {
   const todayCount = useSelector((state: RootState) => state.smoke.todayCount)
   const isDayEnded = useSelector((state: RootState) => state.smoke.isDayEnded)
   const history = useSelector((state: RootState) => state.smoke.history)
-
+  const isLoading = useSelector((state: RootState) => state.smoke.isLoading)
 
   return {
     todayCount,
     isDayEnded,
     incrementSmoke,
     endDay,
-    history
+    history,
+    isLoading
   }
 
 }

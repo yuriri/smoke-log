@@ -1,8 +1,12 @@
+import { Suspense } from "react";
 import SmokeButton from "./components/SmokeButton";
 import TodayCounter from "./components/TodayCounter";
 import EndDayButton from "./components/EndDayButton";
 import History from "./components/HistoryTable";
+import Loading from "@/app/components/ui/Loading";
 import { Bodoni_Moda } from "next/font/google";
+import { supabase } from "@/lib/supabase";
+import { getTodayJST } from "@/lib/date";
 
 import classes from "./page.module.css";
 
@@ -20,11 +24,20 @@ export type SmokeLog = {
   created_at: string
 };
 
-export default function Home() {
+export default async function Home() {
+  const today = getTodayJST();
+  const { data } = await supabase
+    .from('smoke_logs')
+    .select('count')
+    .eq('date', today)
+    .maybeSingle();
+
+  const initialCount = data?.count ?? 0;
+
   return <main className={classes.main}>
     <section className={`${classes.box} border-2 pt-16 border-emerald-800 flex flex-col items-center`}>
       <h1 className={`text-gray-100 text-5xl text-center font-bold ${bodoniModa.className}`}>Smoke Log</h1>
-      <TodayCounter />
+      <TodayCounter initialCount={initialCount} />
       <SmokeButton />
       <EndDayButton />
       <History />

@@ -12,7 +12,7 @@ const initialState: SmokeState = {
   todayCount: 0,
   isDayEnded: false,
   history: [],
-  isLoading: false
+  isLoading: true
 }
 
 export const smokeSlice = createSlice({
