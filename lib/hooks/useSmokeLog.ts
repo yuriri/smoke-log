@@ -5,7 +5,7 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { supabase } from "@/lib/supabase";
 import { AppDispatch, RootState } from "@/lib/store";
-import { setHistory, setTodayCount, setLoading, setIsDayEnded } from "@/lib/slices/smokeSlice";
+import { setHistory, setTodayCount, setLoading, setIsDayEnded, incrementSmokeCount } from "@/lib/slices/smokeSlice";
 import { getTodayJST } from "../date";
 import { RealtimePostgresChangesPayload } from "@supabase/supabase-js";
 
@@ -68,8 +68,12 @@ export function useSmokeLog() {
     }
   }, [dispatch])
 
+  // カウントボタンの処理
   const incrementSmoke = async () => {
-    await fetch('/api/smoke', { method: 'POST' })
+    // SMOKE COUNTボタンを押したら即座にカウントする
+    dispatch(incrementSmokeCount());
+    // supabaseにデータを送る
+    await fetch('/api/smoke', { method: 'POST' });
   };
 
   const endDay = async () => {
