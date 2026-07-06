@@ -46,7 +46,7 @@ export default function History() {
   const filledHistory = fillHistory(history);
 
   return (
-    <div className="w-full border-t-2 mt-5 border-white flex justify-center">
+    <div className="scroll flex-1 items-start overflow-scroll w-full border-t-2 mt-5 border-white flex justify-center">
       {isLoading && <Loading />}
       {!isLoading &&
         filledHistory.length > 0 ? (
@@ -62,7 +62,7 @@ export default function History() {
           </tbody>
         </table>
       ) : (
-        <p>まだデータなし</p>
+        <p>No Data yet...</p>
       )
       }
     </div>

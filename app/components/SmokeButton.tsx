@@ -1,11 +1,6 @@
 "use client";
 import { useSmokeLog } from "@/lib/hooks/useSmokeLog";
-import { Bodoni_Moda, Orbitron } from "next/font/google";
-
-const bodoniModa = Bodoni_Moda({
-  subsets: ["latin"],
-  weight: '700'
-});
+import { Orbitron } from "next/font/google";
 
 const orbitron = Orbitron({
   weight: '500',
@@ -14,7 +9,6 @@ const orbitron = Orbitron({
 
 export default function SmokeButton() {
   const { isDayEnded, incrementSmoke } = useSmokeLog();
-
   return (
     <button className={`${orbitron.className} w-[90%] bg-emerald-800 block text-2xl mt-6 text-gray-100 rounded-md p-2 hover:cursor-pointer`} onClick={incrementSmoke} disabled={isDayEnded}>SMOKED</button>
   )
