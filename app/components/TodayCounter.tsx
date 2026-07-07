@@ -11,9 +11,12 @@ const orbitron = Orbitron({
 
 // 今日吸った本数を表示する
 export default function TodayCounter({ initialCount }: { initialCount: number }) {
-  const { todayCount, isLoading } = useSmokeLog();
+  const { todayCount, isLoading, errorMessage } = useSmokeLog();
   return <p className={`${orbitron.className} text-center text-white`}>Todays count<strong className={`${orbitron.className} bold text-5xl`}>{
-    isLoading
-      ? initialCount
-      : todayCount}</strong></p>
+    errorMessage
+      ? "-"
+      :
+      isLoading
+        ? initialCount
+        : todayCount}</strong></p>
 }

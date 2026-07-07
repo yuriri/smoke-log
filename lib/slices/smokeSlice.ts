@@ -6,13 +6,15 @@ interface SmokeState {
   isDayEnded: boolean       // 今日が終了済みか
   history: SmokeLog[]       // 過去の履歴
   isLoading: boolean        // 通信中フラグ
+  errorMessage: string | null      // エラー状態
 }
 
 const initialState: SmokeState = {
   todayCount: 0,
   isDayEnded: false,
   history: [],
-  isLoading: true
+  isLoading: true,
+  errorMessage: null
 }
 
 export const smokeSlice = createSlice({
@@ -25,7 +27,7 @@ export const smokeSlice = createSlice({
     endDay: (state) => {
       state.isDayEnded = true
     },
-    setHistory: (state, action: PayloadAction<SmokeLog[]>) =>{
+    setHistory: (state, action: PayloadAction<SmokeLog[]>) => {
       state.history = action.payload
     },
     setLoading: (state, action: PayloadAction<boolean>) => {
@@ -36,10 +38,13 @@ export const smokeSlice = createSlice({
     },
     setIsDayEnded: (state, action: PayloadAction<boolean>) => {
       state.isDayEnded = action.payload;
+    },
+    setError: (state, action: PayloadAction<string | null>) => {
+      state.errorMessage = action.payload
     }
   }
 })
 
-export const {incrementSmokeCount, endDay, setHistory, setLoading, setTodayCount, setIsDayEnded} = smokeSlice.actions;
+export const { incrementSmokeCount, endDay, setHistory, setLoading, setTodayCount, setIsDayEnded, setError } = smokeSlice.actions;
 
 export default smokeSlice.reducer

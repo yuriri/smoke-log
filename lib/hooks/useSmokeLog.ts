@@ -5,7 +5,7 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { supabase } from "@/lib/supabase";
 import { AppDispatch, RootState } from "@/lib/store";
-import { setHistory, setTodayCount, setLoading, setIsDayEnded, incrementSmokeCount } from "@/lib/slices/smokeSlice";
+import { setHistory, setTodayCount, setLoading, setIsDayEnded, incrementSmokeCount, setError } from "@/lib/slices/smokeSlice";
 import { getTodayJST } from "../date";
 import { RealtimePostgresChangesPayload } from "@supabase/supabase-js";
 
@@ -18,24 +18,28 @@ export function useSmokeLog() {
 
       const today = getTodayJST();
       // 今日のデータを取得
-      const { data: todayData } = await supabase
+      const { data: todayData, error: todayError } = await supabase
         .from('smoke_logs')
         .select('*')
         .eq('date', today)
         .maybeSingle()
 
+      // エラー処理
+      if (todayError) dispatch(setError('今日のデータの取得に失敗しました。'))
       // カウントをセットする
       if (todayData) {
         dispatch(setTodayCount(todayData.count))
       }
 
       // 今日以外のデータを全て取得
-      const { data: historyData } = await supabase
+      const { data: historyData, error: historyError } = await supabase
         .from('smoke_logs')
         .select('*')
         .neq('date', today) // 今日以外のデータ
         .order('date', { ascending: false })
 
+      // エラー処理
+      if (historyError) dispatch(setError('履歴データの取得に失敗しました。'))
       // 今日以外のデータをセットする
       if (historyData) {
         dispatch(setHistory(historyData))
@@ -74,20 +78,29 @@ export function useSmokeLog() {
 
   // カウントボタンの処理
   const incrementSmoke = async () => {
+    const previousCount = todayCount
     // SMOKE COUNTボタンを押したら即座にカウントする
     dispatch(incrementSmokeCount());
-    // supabaseにデータを送る
-    await fetch('/api/smoke', { method: 'POST' });
+    // supabaseにデータを保存する
+    const res = await fetch('/api/smoke', { method: 'POST' });
+    if (!res.ok) {
+      dispatch(setTodayCount(previousCount))
+      dispatch(setError('カウントの保存に失敗しました。'))
+    }
   };
 
   const endDay = async () => {
-    await fetch('/api/end-day', { method: 'POST' })
+    const res = await fetch('/api/end-day', { method: 'POST' })
+    if (!res.ok) {
+      dispatch(setError('終日処理に失敗しました。'))
+    }
   };
 
   const todayCount = useSelector((state: RootState) => state.smoke.todayCount)
   const isDayEnded = useSelector((state: RootState) => state.smoke.isDayEnded)
   const history = useSelector((state: RootState) => state.smoke.history)
   const isLoading = useSelector((state: RootState) => state.smoke.isLoading)
+  const errorMessage = useSelector((state: RootState) => state.smoke.errorMessage)
 
   return {
     todayCount,
@@ -95,7 +108,8 @@ export function useSmokeLog() {
     incrementSmoke,
     endDay,
     history,
-    isLoading
+    isLoading,
+    errorMessage
   }
 
 }

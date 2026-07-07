@@ -3,18 +3,20 @@
 import { useSmokeLog } from "@/lib/hooks/useSmokeLog";
 import fillHistory from "@/lib/utils/fillHistory";
 import Loading from "@/app/components/ui/Loading";
+import ErrorBanner from "@/app/components/ui/ErrorBanner";
 
 
 export default function History() {
   // ログを取得
-  const { history, isLoading } = useSmokeLog();
+  const { history, isLoading, errorMessage } = useSmokeLog();
   // ログを整形
   const filledHistory = fillHistory(history);
 
   return (
     <div className="scroll flex-1 items-start overflow-scroll w-full border-t-2 mt-5 border-white flex justify-center">
-      {isLoading && <Loading />}
-      {!isLoading &&
+      {errorMessage && <ErrorBanner />}
+      {!errorMessage && isLoading && <Loading />}
+      {!errorMessage && (!isLoading &&
         filledHistory.length > 0 ? (
         <table className={`mt-2 w-[90%] table-auto`}>
           <thead>
@@ -29,7 +31,7 @@ export default function History() {
         </table>
       ) : (
         <p>No Data yet...</p>
-      )
+      ))
       }
     </div>
   )
