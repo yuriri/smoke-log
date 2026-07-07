@@ -1,4 +1,8 @@
 // Loading表示
-export default function Loading() {
-  return <div className="text-white text-2xl text-center">Loading...</div>
+type LoadingProps = {
+  additionalClass: string
+}
+
+export default function Loading(props: LoadingProps) {
+  return <p className={`text-gray-400 text-xl text-center ${props.additionalClass}`}>Loading...</p>
 }
