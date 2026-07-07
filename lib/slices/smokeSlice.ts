@@ -1,6 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { SmokeLog } from "@/app/page";
-
 interface SmokeState {
   todayCount: number        // 今日の本数
   isDayEnded: boolean       // 今日が終了済みか

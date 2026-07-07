@@ -2,18 +2,8 @@ import SmokeButton from "./components/SmokeButton";
 import TodayCounter from "./components/TodayCounter";
 import EndDayButton from "./components/EndDayButton";
 import History from "./components/HistoryTable";
-import ErrorBanner from "@/app/components/ui/ErrorBanner";
-import { Bodoni_Moda } from "next/font/google";
-import { supabase } from "@/lib/supabase";
+import { createClient } from "@/lib/supabase/server";
 import { getTodayJST } from "@/lib/date";
-
-import classes from "./page.module.css";
-
-// フォント読み込み
-const bodoniModa = Bodoni_Moda({
-  subsets: ["latin"],
-  weight: '500'
-});
 
 export type SmokeLog = {
   id: number,
@@ -25,6 +15,7 @@ export type SmokeLog = {
 };
 
 export default async function Home() {
+  const supabase = await createClient();
   const today = getTodayJST();
   let initialCount = 0;
   let hasError = false;
@@ -49,18 +40,15 @@ export default async function Home() {
     hasError = true;
   }
 
-  return <main className={classes.main}>
-    <section className={`${classes.box} border-2 pt-16 border-emerald-800 flex flex-col items-center`}>
-      <h1 className={`text-gray-100 text-5xl text-center font-bold ${bodoniModa.className}`}>Smoke Log</h1>
-      {hasError
-        ? <p className="text-red-400 text-sm text-center mt-5">データの読み込みに失敗しました。</p>
-        : <>
-          <TodayCounter initialCount={initialCount} />
-          <SmokeButton />
-          <EndDayButton />
-          <History />
-        </>
-      }
-    </section>
-  </main>
+  return <>
+    {hasError
+      ? <p className="text-red-400 text-sm text-center mt-5">データの読み込みに失敗しました。</p>
+      : <>
+        <TodayCounter initialCount={initialCount} />
+        <SmokeButton />
+        <EndDayButton />
+        <History />
+      </>
+    }
+  </>
 }
