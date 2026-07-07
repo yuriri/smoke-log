@@ -17,22 +17,26 @@ export function useSmokeLog() {
       dispatch(setLoading(true));
 
       const today = getTodayJST();
+      // 今日のデータを取得
       const { data: todayData } = await supabase
         .from('smoke_logs')
         .select('*')
         .eq('date', today)
         .maybeSingle()
 
+      // カウントをセットする
       if (todayData) {
         dispatch(setTodayCount(todayData.count))
       }
 
+      // 今日以外のデータを全て取得
       const { data: historyData } = await supabase
         .from('smoke_logs')
         .select('*')
         .neq('date', today) // 今日以外のデータ
         .order('date', { ascending: false })
 
+      // 今日以外のデータをセットする
       if (historyData) {
         dispatch(setHistory(historyData))
       }
