@@ -29,6 +29,8 @@ export function useSmokeLog() {
       // カウントをセットする
       if (todayData) {
         dispatch(setTodayCount(todayData.count))
+        // finishボタンが押されているかを取得
+        dispatch(setIsDayEnded(todayData.is_day_ended))
       }
 
       // 今日以外のデータを全て取得
@@ -78,6 +80,8 @@ export function useSmokeLog() {
 
   // カウントボタンの処理
   const incrementSmoke = async () => {
+    // finishボタンが押された場合はreturn
+    if (isDayEnded) return;
     const previousCount = todayCount
     // SMOKE COUNTボタンを押したら即座にカウントする
     dispatch(incrementSmokeCount());
@@ -96,6 +100,14 @@ export function useSmokeLog() {
     }
   };
 
+  // カウントを再開する処理
+  const startDay = async () => {
+    const res = await fetch('/api/start-day', { method: 'POST' })
+    if (!res.ok) {
+      dispatch(setError('再開処理に失敗しました。'))
+    }
+  };
+
   const todayCount = useSelector((state: RootState) => state.smoke.todayCount)
   const isDayEnded = useSelector((state: RootState) => state.smoke.isDayEnded)
   const history = useSelector((state: RootState) => state.smoke.history)
@@ -107,6 +119,7 @@ export function useSmokeLog() {
     isDayEnded,
     incrementSmoke,
     endDay,
+    startDay,
     history,
     isLoading,
     errorMessage
