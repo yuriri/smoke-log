@@ -40,10 +40,15 @@ export const smokeSlice = createSlice({
     },
     setError: (state, action: PayloadAction<string | null>) => {
       state.errorMessage = action.payload
+    },
+    updateHistoryItem: (state, action: PayloadAction<{ date: string; count: number }>) => {
+      // date で該当履歴を探して count を更新する
+      const item = state.history.find(h => h.date === action.payload.date);
+      if (item) item.count = action.payload.count;
     }
   }
 })
 
-export const { incrementSmokeCount, endDay, setHistory, setLoading, setTodayCount, setIsDayEnded, setError } = smokeSlice.actions;
+export const { incrementSmokeCount, endDay, setHistory, setLoading, setTodayCount, setIsDayEnded, setError, updateHistoryItem } = smokeSlice.actions;
 
 export default smokeSlice.reducer
