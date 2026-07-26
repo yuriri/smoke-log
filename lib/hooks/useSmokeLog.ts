@@ -5,7 +5,7 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { supabase } from "@/lib/supabase";
 import { AppDispatch, RootState } from "@/lib/store";
-import { setHistory, setTodayCount, setLoading, setIsDayEnded, incrementSmokeCount, setError } from "@/lib/slices/smokeSlice";
+import { setHistory, setTodayCount, setLoading, setIsDayEnded, incrementSmokeCount, setError, updateHistoryItem } from "@/lib/slices/smokeSlice";
 import { getTodayJST } from "../date";
 import { RealtimePostgresChangesPayload } from "@supabase/supabase-js";
 
@@ -108,6 +108,24 @@ export function useSmokeLog() {
     }
   };
 
+  // Editボタンの処理
+  const editHistory = async (date: string, count: number) => {
+    const previousHistory = history;
+    // supabase更新前に楽観的更新をしておく
+    dispatch(updateHistoryItem({ date, count }));
+    const res = await fetch('/api/edit-history', {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      // ボタンから受け取った値をsupabaseに送る
+      body: JSON.stringify({ date, count }),
+    });
+    // 更新が失敗したらロールバックする
+    if (!res.ok) {
+      dispatch(setHistory(previousHistory));
+      dispatch(setError('履歴の更新に失敗しました。'));
+    }
+  };
+
   const todayCount = useSelector((state: RootState) => state.smoke.todayCount)
   const isDayEnded = useSelector((state: RootState) => state.smoke.isDayEnded)
   const history = useSelector((state: RootState) => state.smoke.history)
@@ -120,6 +138,7 @@ export function useSmokeLog() {
     incrementSmoke,
     endDay,
     startDay,
+    editHistory,
     history,
     isLoading,
     errorMessage

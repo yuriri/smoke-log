@@ -4,10 +4,11 @@ import { useSmokeLog } from "@/lib/hooks/useSmokeLog";
 import fillHistory from "@/lib/utils/fillHistory";
 import Loading from "@/app/components/ui/Loading";
 import ErrorBanner from "@/app/components/ui/ErrorBanner";
+import EditHistoryButton from "@/app/components/buttons/EditHistoryButton";
 
 export default function History() {
   // ログを取得
-  const { history, isLoading, errorMessage } = useSmokeLog();
+  const { history, isLoading, errorMessage, editHistory } = useSmokeLog();
   // ログを整形
   const filledHistory = fillHistory(history);
 
@@ -22,10 +23,19 @@ export default function History() {
             <tr className="text-gray-300">
               <th className="font-normal text-left">Date</th>
               <th className="font-normal text-right">Count</th>
+              <th></th>
             </tr>
           </thead>
           <tbody>
-            {filledHistory.map((item => <tr key={item.date} className=" text-gray-100"><td>{item.date}</td><td className="text-right">{item.count}</td></tr>))}
+            {filledHistory.map((item) => (
+              <tr key={item.date} className="text-gray-100">
+                <td>{item.date}</td>
+                <td className="text-right">{item.count}</td>
+                <td className="text-right pl-2">
+                  <EditHistoryButton date={item.date} count={item.count} editHistory={editHistory} />
+                </td>
+              </tr>
+            ))}
           </tbody>
         </table>
       ) : (
