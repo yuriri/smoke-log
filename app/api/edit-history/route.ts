@@ -11,8 +11,8 @@ export async function PATCH(request: NextRequest) {
 
   const { error } = await supabase
     .from("smoke_logs")
-    .update({ count })
-    .eq("date", date);
+    // データが存在しない場合は新規追加する
+    .upsert({ date, count, is_day_ended: true }, { onConflict: "date" });
 
   if (error) {
     return NextResponse.json({ error: error.message }, { status: 500 });
