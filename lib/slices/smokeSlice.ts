@@ -42,9 +42,23 @@ export const smokeSlice = createSlice({
       state.errorMessage = action.payload
     },
     updateHistoryItem: (state, action: PayloadAction<{ date: string; count: number }>) => {
-      // date で該当履歴を探して count を更新する
       const item = state.history.find(h => h.date === action.payload.date);
-      if (item) item.count = action.payload.count;
+      if (item) {
+        // 既存行は count を更新する
+        item.count = action.payload.count;
+      } else {
+        // Supabaseに行がない日（fillHistoryで補完された日）は新規追加する
+        state.history.push({
+          id: -1,
+          date: action.payload.date,
+          count: action.payload.count,
+          is_day_ended: true,
+          ended_at: null,
+          created_at: new Date().toISOString(),
+        });
+        // pushするとデータが崩れるので、push後に降順でsortする
+        state.history.sort((a, b) => b.date.localeCompare(a.date));
+      }
     }
   }
 })

@@ -116,7 +116,7 @@ export function useSmokeLog() {
     const res = await fetch('/api/edit-history', {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
-      // ボタンから受け取った値をsupabaseに送る
+      // ボタンから受け取った日付とカウントをsupabaseに送る
       body: JSON.stringify({ date, count }),
     });
     // 更新が失敗したらロールバックする
