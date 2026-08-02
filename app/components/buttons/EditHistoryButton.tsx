@@ -35,13 +35,13 @@ export default function EditHistoryButton({ date, count, editHistory }: Props) {
         />
         <button
           onClick={handleSave}
-          className="text-xs text-green-400 hover:text-green-300"
+          className="text-xs text-green-400 hover:text-green-300 hover:cursor-pointer"
         >
           Save
         </button>
         <button
           onClick={handleCancel}
-          className="text-xs text-gray-400 hover:text-gray-300"
+          className="text-xs text-gray-400 hover:text-gray-300 hover:cursor-pointer"
         >
           Cancel
         </button>
@@ -52,7 +52,7 @@ export default function EditHistoryButton({ date, count, editHistory }: Props) {
   return (
     <button
       onClick={() => { setInputValue(count); setIsEditing(true); }}
-      className="text-xs text-gray-400 hover:text-gray-200"
+      className="text-xs text-gray-400 hover:text-gray-200 hover:cursor-pointer"
     >
       Edit
     </button>

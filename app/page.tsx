@@ -1,6 +1,6 @@
-import SmokeButton from "./components/SmokeButton";
+import SmokeButton from "./components/buttons/SmokeButton";
 import TodayCounter from "./components/TodayCounter";
-import EndDayButton from "./components/EndDayButton";
+import EndDayButton from "./components/buttons/EndDayButton";
 import History from "./components/HistoryTable";
 import { createClient } from "@/lib/supabase/server";
 import { getTodayJST } from "@/lib/date";
