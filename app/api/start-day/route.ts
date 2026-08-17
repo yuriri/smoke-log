@@ -1,5 +1,5 @@
 import { supabase } from "@/lib/supabase";
-import { getTodayJST } from "@/lib/date";
+import { getTodayJST } from "@/lib/utils/date";
 import { NextResponse } from "next/server";
 
 // 今日のカウントを再開する

@@ -1,7 +1,5 @@
 "use client";
 import { useSmokeLog } from "@/lib/hooks/useSmokeLog";
-import classes from "./end_day_button.module.css";
-
 export default function EndDayButton() {
   const { isDayEnded, endDay, startDay } = useSmokeLog();
   const handleClick = () => {
@@ -16,5 +14,5 @@ export default function EndDayButton() {
       }
     }
   }
-  return <button className={`rounded-xs w-[45%] hover:cursor-pointer mt-4 rounded-lg bg-gray-100 text-gray-500 ${classes.button01}`} onClick={handleClick}>{isDayEnded ? 'Start Count' : 'Finish Count'}</button>
+  return <button className={`rounded-xs w-[45%] hover:cursor-pointer mt-4 rounded-lg bg-gray-100 text-gray-500`} onClick={handleClick}>{isDayEnded ? 'Start Count' : 'Finish Count'}</button>
 }
