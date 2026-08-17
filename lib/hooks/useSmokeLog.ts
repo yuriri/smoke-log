@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { supabase } from "@/lib/supabase";
 import { AppDispatch, RootState } from "@/lib/store";
 import { setHistory, setTodayCount, setLoading, setIsDayEnded, incrementSmokeCount, setError, updateHistoryItem } from "@/lib/slices/smokeSlice";
-import { getTodayJST } from "../date";
+import { getTodayJST } from "../utils/date";
 import { RealtimePostgresChangesPayload } from "@supabase/supabase-js";
 
 export function useSmokeLog() {

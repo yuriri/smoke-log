@@ -1,5 +1,5 @@
 import { describe, expect, test, vi, beforeEach, afterEach } from 'vitest';
-import { getTodayJST } from '@/lib/date';
+import { getTodayJST } from '@/lib/utils/date';
 
 test('返り値が YYYY-MM-DD 形式', () => {
   expect(getTodayJST()).toMatch(/^\d{4}-\d{2}-\d{2}$/);

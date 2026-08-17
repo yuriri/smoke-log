@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Bodoni_Moda } from "next/font/google";
 import StoreProviders from "./StoreProvider";
-import LogOut from "@/app/components/LogOut";
+import LogOut from "@/app/components/buttons/LogOut";
 import { createClient } from "@/lib/supabase/server";
 import "./globals.css";
 

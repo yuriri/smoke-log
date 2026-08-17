@@ -3,7 +3,7 @@ import TodayCounter from "./components/TodayCounter";
 import EndDayButton from "./components/buttons/EndDayButton";
 import History from "./components/HistoryTable";
 import { createClient } from "@/lib/supabase/server";
-import { getTodayJST } from "@/lib/date";
+import { getTodayJST } from "@/lib/utils/date";
 
 export type SmokeLog = {
   id: number,
